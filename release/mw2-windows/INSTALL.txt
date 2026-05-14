@@ -1,0 +1,87 @@
+================================================================
+MW2 (2009) MVP — Red Eclipse overlay — Windows install
+================================================================
+
+This package is a PATCH on top of an existing Red Eclipse 2.0 Windows
+install. It contains:
+
+    redeclipse.exe                  — patched game binary (mingw build)
+    config/mw2.cfg                  — gameplay overrides
+    config/ui/mw2/*.cfg             — MW2-styled menu pack
+    config/defaults.cfg             — modified to load the overlay
+
+You still need the base game data (maps, models, textures, sounds, fonts).
+Those are roughly 1–2 GB and are distributed with the official Red Eclipse
+Windows release, not in this patch.
+
+----------------------------------------------------------------
+Install steps
+----------------------------------------------------------------
+
+1) Download the Red Eclipse 2.0 Windows release from:
+
+       https://www.redeclipse.net/download
+
+   Run the installer (or unzip the portable build) so you have a folder
+   that contains:
+
+       redeclipse.exe
+       redeclipse.bat
+       bin\amd64\*.dll
+       config\
+       data\
+
+2) Back up the four files you're about to replace:
+
+       redeclipse.exe                       -> redeclipse.exe.bak
+       config\defaults.cfg                  -> config\defaults.cfg.bak
+
+3) Copy ALL files from this patch into the Red Eclipse install folder,
+   overwriting where prompted:
+
+       redeclipse.exe                       -> <install>\redeclipse.exe
+       config\defaults.cfg                  -> <install>\config\defaults.cfg
+       config\mw2.cfg                       -> <install>\config\mw2.cfg
+       config\ui\mw2\barracks.cfg           -> <install>\config\ui\mw2\barracks.cfg
+       config\ui\mw2\createaclass.cfg       -> <install>\config\ui\mw2\createaclass.cfg
+       config\ui\mw2\main.cfg               -> <install>\config\ui\mw2\main.cfg
+       config\ui\mw2\perks.cfg              -> <install>\config\ui\mw2\perks.cfg
+
+4) Launch via the existing redeclipse.bat (preferred) or by running
+   redeclipse.exe directly.
+
+----------------------------------------------------------------
+What to expect
+----------------------------------------------------------------
+
+* Main menu reads:  MULTIPLAYER / BARRACKS / OPTIONS / QUIT
+* Barracks -> CREATE A CLASS gives you 5 class slots with
+  primary / secondary / lethal / tactical / 3 perk pickers.
+* Parkour (wallrun, dash, slide) is disabled.
+* Sprint runs out in ~4 seconds.
+* Right-mouse ADS: FOV pulls in, movement slows.
+* TTK is faster than stock Red Eclipse (damagescale 1.4).
+
+----------------------------------------------------------------
+Reverting
+----------------------------------------------------------------
+
+Restore the two .bak files you saved in step 2.
+
+----------------------------------------------------------------
+Known limitations of the MVP
+----------------------------------------------------------------
+
+* No prone — Red Eclipse has no prone physics state.
+* Perks display in the menu but do NOT yet affect gameplay.
+* No killstreaks, no killcam, no aim assist, no anti-cheat.
+* Class slot edits persist for the current session only.
+
+----------------------------------------------------------------
+Build notes
+----------------------------------------------------------------
+
+redeclipse.exe was cross-compiled with mingw-w64-g++ 13.2.0 on
+Ubuntu 24.04, linking against the SDL2 / OpenAL / freetype DLLs
+that ship with the official Red Eclipse Windows release. You do
+not need to install Visual C++ runtimes.
