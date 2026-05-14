@@ -1,0 +1,58 @@
+name: Build Windows Release
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Install mingw-w64 toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 make zip
+
+      - name: Cross-compile Windows binaries
+        working-directory: src
+        run: |
+          make -j"$(nproc)" install \
+            CC=x86_64-w64-mingw32-gcc \
+            CXX=x86_64-w64-mingw32-g++ \
+            AR=x86_64-w64-mingw32-ar \
+            RANLIB=x86_64-w64-mingw32-ranlib
+
+      - name: Verify binary
+        run: |
+          ls -la bin/amd64/redeclipse.exe
+          file bin/amd64/redeclipse.exe
+
+      - name: Stage release tree
+        run: |
+          mkdir -p release/redeclipse
+          cp -r bin config data doc readme.md readme.txt \
+                redeclipse.bat redeclipse.sh \
+                redeclipse_server.bat redeclipse_server.sh \
+                release/redeclipse/
+          # Strip dev cruft
+          find release/redeclipse -type d -name .git -prune -exec rm -rf {} +
+          find release/redeclipse -type f -name '.gitignore' -delete
+          find release/redeclipse -type f -name '.gitmodules' -delete
+
+      - name: Zip release
+        working-directory: release
+        run: zip -r ../redeclipse-windows.zip redeclipse
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: redeclipse-windows
+          path: redeclipse-windows.zip
+          if-no-files-found: error
