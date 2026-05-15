@@ -25,10 +25,16 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y mingw-w64 make zip
-          # The Makefile invokes `windres` without the cross prefix
-          # when PLATFORM isn't detected as "cross". Point the bare
-          # name at the mingw resource compiler.
-          sudo ln -sf /usr/bin/x86_64-w64-mingw32-windres /usr/local/bin/windres
+          # The Makefile invokes `windres` without the cross prefix.
+          # A symlink would set argv[0] to /usr/local/bin/windres,
+          # which makes windres look for winresrc.h relative to that
+          # path and fail. A wrapper preserves the mingw binary path
+          # so windres finds its own headers.
+          sudo tee /usr/local/bin/windres >/dev/null <<'EOF'
+          #!/bin/sh
+          exec /usr/bin/x86_64-w64-mingw32-windres "$@"
+          EOF
+          sudo chmod +x /usr/local/bin/windres
 
       - name: Cross-compile Windows binaries
         working-directory: src
