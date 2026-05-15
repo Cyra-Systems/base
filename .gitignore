@@ -43,7 +43,11 @@ version.txt
 src/redeclipse.cscope_file_list
 src/build/
 .kdev/
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/c_cpp_properties.json
 .vs/
 GPATH
 GTAGS

@@ -1,0 +1,38 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/src/shared",
+                "${workspaceFolder}/src/engine",
+                "${workspaceFolder}/src/game",
+                "${workspaceFolder}/src/include",
+                "${workspaceFolder}/src/enet/include",
+                "${workspaceFolder}/src/support",
+                "${workspaceFolder}/src/steam"
+            ],
+            "defines": [
+                "WIN32",
+                "_WINDOWS",
+                "_CRT_SECURE_NO_WARNINGS",
+                "NDEBUG"
+            ],
+            "windowsSdkVersion": "10.0.22000.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/src/shared",
+                    "${workspaceFolder}/src/engine",
+                    "${workspaceFolder}/src/game",
+                    "${workspaceFolder}/src/include",
+                    "${workspaceFolder}/src/enet/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build (Release)",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-File", "${workspaceFolder}\\tools\\setup-local-dev.ps1",
+                "-BuildOnly"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Build (Debug)",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-File", "${workspaceFolder}\\tools\\setup-local-dev.ps1",
+                "-BuildOnly",
+                "-Configuration", "Debug"
+            ],
+            "group": "build",
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "First-time setup (detect install + build)",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-File", "${workspaceFolder}\\tools\\setup-local-dev.ps1"
+            ],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run game",
+            "type": "shell",
+            "command": "${workspaceFolder}\\redeclipse.bat",
+            "options": { "cwd": "${workspaceFolder}" },
+            "presentation": { "reveal": "always", "panel": "dedicated" },
+            "problemMatcher": []
+        }
+    ]
+}
