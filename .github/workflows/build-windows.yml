@@ -5,6 +5,9 @@ on:
     branches: ['**']
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -56,3 +59,14 @@ jobs:
           name: redeclipse-windows
           path: redeclipse-windows.zip
           if-no-files-found: error
+
+      - name: Publish rolling release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.ref_name }}
+          name: "Build (${{ github.ref_name }})"
+          body: |
+            Automated Windows build from `${{ github.ref_name }}` @ ${{ github.sha }}.
+            Download `redeclipse-windows.zip`, extract, run `redeclipse.bat`.
+          files: redeclipse-windows.zip
+          prerelease: true
