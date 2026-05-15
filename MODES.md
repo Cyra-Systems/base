@@ -104,19 +104,26 @@ Each mode is a `.cfg` file in `config/modes/`:
 - `infection.cfg` — asymmetric team, melee-only zombies grow in number
 - `prophunt.cfg` — (later) hiders disguise as map props
 
-## File layout
+## File layout (current)
 
 ```
 config/modes/
-  framework.cfg          // hook dispatcher, registry
-  helpers.cfg            // killplayer, giveweapon, setflag helpers
-  sumo.cfg               // first mode
-  gungame.cfg
-  infection.cfg
+  framework.cfg          ✓  hook dispatcher, registry, modehelper_*
+  classes.cfg            ✓  Pick 10 data model, perk registry (stubs)
+  cosmetics.cfg          ✓  camo / emblem / banner data model
+  killstreaks.cfg        ✓  MW3 strike package registry (all stubs)
+  sumo.cfg               ✓  first mode — playable via kill volumes
+  gungame.cfg            ✓  rotating loadout, kill-to-progress
+  infection.cfg          ✓  asymmetric zombies, team flip on kill
+  tdm.cfg                ✓  generic team deathmatch
+config/ui/game/
+  modes.cfg              ✓  in-game mode selector panel
 data/maps/
-  sumo_platform.ogz      // sample Sumo arena
-  gungame_office.ogz     // sample Gun Game level
+  sumo_platform.ogz      ✗  NEEDS hand-built sample map
+  gungame_arena.ogz      ✗  NEEDS hand-built sample map
 ```
+
+`✓` = pushed and loads at engine start. `✗` = not yet authored.
 
 ## Server authority
 
