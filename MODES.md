@@ -112,18 +112,55 @@ config/modes/
   classes.cfg            ✓  Pick 10 data model, perk registry (stubs)
   cosmetics.cfg          ✓  camo / emblem / banner data model
   killstreaks.cfg        ✓  MW3 strike package registry (all stubs)
+  vehicles.cfg           ✓  Halo Reach vehicle roster + spawn API (stubs)
   sumo.cfg               ✓  first mode — playable via kill volumes
   gungame.cfg            ✓  rotating loadout, kill-to-progress
   infection.cfg          ✓  asymmetric zombies, team flip on kill
   tdm.cfg                ✓  generic team deathmatch
+  zombies.cfg            ✓  round-based co-op vs waves (Treyarch pattern)
+  br.cfg                 ✓  Battle Royale — shrinking zone, no respawn
+  campaign.cfg           ✓  scripted single-player/co-op missions
 config/ui/game/
   modes.cfg              ✓  in-game mode selector panel
+  editor_rules.cfg       ✓  editor 'Map Rules' panel (Forge-style)
 data/maps/
   sumo_platform.ogz      ✗  NEEDS hand-built sample map
   gungame_arena.ogz      ✗  NEEDS hand-built sample map
+  campaigns/             ✗  per-mission script files (none yet)
 ```
 
 `✓` = pushed and loads at engine start. `✗` = not yet authored.
+
+## Major engine bridges still pending
+
+The architecture is in place, but most of the mode files call into stubs
+that print to console instead of changing game state. Real implementations
+need engine work — listed here for the next implementation pushes:
+
+| Bridge | Used by | Complexity |
+|---|---|---|
+| Server-authoritative mode lifecycle hooks | every mode | high |
+| `setclientloadout` (server -> client weapon override) | all modes | medium |
+| `endmatch <winner_cn>` (intermission trigger) | all modes | medium |
+| Remote `killclient <cn>` | all modes | medium |
+| `getclientteam <cn>` | TDM, CTF, future team modes | low |
+| Entity attrs write-from-script | editor rules panel | medium |
+| Damage volume / zone entity type | BR, zombies, Sumo polish | medium |
+| Radar overlay primitive | UAV killstreak family | medium |
+| Vehicle entity type + arcade physics | vehicles.cfg | high |
+| Zombie AI controller (waves, pathing) | zombies | high |
+| Down / revive state machine | zombies co-op | medium |
+| Camo / emblem / banner rendering | cosmetics | medium |
+| Mission objective HUD overlay | campaign | low |
+
+Order of attack for next session, ranked by unlocking-the-most-modes-per-hour:
+
+1. Server-side lifecycle hooks (one push, makes everything multiplayer-real)
+2. setclientloadout + endmatch (unlocks all five existing modes properly)
+3. getclientteam (unblocks TDM)
+4. Entity attrs write (unblocks editor rules panel)
+5. Vehicles (engine project, plan multi-week)
+6. AI controller for zombies (engine project, plan multi-week)
 
 ## Server authority
 
