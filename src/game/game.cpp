@@ -253,12 +253,12 @@ namespace game
     FVAR(IDF_PERSIST, firstpersonpitchmax, 0, 45, 90);
     FVAR(IDF_PERSIST, firstpersonpitchscale, -1, 1, 1);
 
-    VAR(IDF_PERSIST, firstpersonsway, 0, 1, 1);
+    VAR(IDF_PERSIST, firstpersonsway, 0, 0, 1); // MW2 tune: kill weapon sway for snappy aim
     FVAR(IDF_PERSIST, firstpersonswayslide, 0, 0.5f, 1);
     FVAR(IDF_PERSIST, firstpersonswaymin, 0, 0.15f, 1);
     FVAR(IDF_PERSIST, firstpersonswaystep, 1, 50.f, 1000);
-    FVAR(IDF_PERSIST, firstpersonswayside, 0, 0.05f, 10);
-    FVAR(IDF_PERSIST, firstpersonswayup, 0, 0.05f, 10);
+    FVAR(IDF_PERSIST, firstpersonswayside, 0, 0.02f, 10); // MW2 tune: reduced side sway
+    FVAR(IDF_PERSIST, firstpersonswayup, 0, 0.02f, 10); // MW2 tune: reduced vertical sway
 
     VAR(IDF_PERSIST, firstpersonbob, 0, 0, 1);
     FVAR(IDF_PERSIST, firstpersonbobmin, 0, 0.2f, 1);
