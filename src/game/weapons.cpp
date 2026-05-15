@@ -9,7 +9,7 @@ namespace weapons
     VAR(IDF_PERSIST, weapskipempty, 0, 1, 1);
 
     int lastweapselect = 0;
-    VAR(IDF_PERSIST, weapselectdelay, 0, 200, VAR_MAX);
+    VAR(IDF_PERSIST, weapselectdelay, 0, 80, VAR_MAX); // MW2 tune: snappy weapon swap
 
     vector<int> weaplist;
     void buildweaplist(int bitmask)

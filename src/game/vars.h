@@ -31,7 +31,7 @@ GVAR(IDF_MAP, 0, hurtcorrodetime, 0, 5500, VAR_MAX);
 GVAR(IDF_MAP, 0, hurtcorrodedelay, 0, 1000, VAR_MAX);
 GVAR(IDF_MAP, 0, hurtcorrodedamage, 0, 15, VAR_MAX);
 
-GFVAR(IDF_MAP, 0, gravity, 0, 50.f, FVAR_MAX); // gravity
+GFVAR(IDF_MAP, 0, gravity, 0, 85.f, FVAR_MAX); // gravity — MW2 tune: heavier fall, tighter arcs
 GFVAR(IDF_GAMEMOD, 0, gravityscale, 0, 1, FVAR_MAX);
 GFVAR(IDF_GAMEMOD, 0, gravitycrouch, 0, 1.25f, FVAR_MAX);
 GFVAR(IDF_GAMEMOD, 0, buoyancycrouch, 0, 0, FVAR_MAX);
@@ -582,20 +582,20 @@ GFVAR(IDF_GAMEMOD, 0, janitorsuckspeed, 0, 150.f, FVAR_MAX); // suck speed
 GFVAR(IDF_GAMEMOD, 0, janitorreject, 0, 128.f, FVAR_MAX); // reject distance
 GSVAR(0, PRIV_MODERATOR, janitorvanities, "");
 
-GFVAR(IDF_GAMEMOD, 0, movespeed, FVAR_NONZERO, 1.0f, FVAR_MAX); // speed
-GFVAR(IDF_GAMEMOD, 0, movecrawl, FVAR_NONZERO, 0.6f, FVAR_MAX); // crawl modifier
-GFVAR(IDF_GAMEMOD, 0, moverun, FVAR_NONZERO, 1.25f, FVAR_MAX); // running modifier
-GFVAR(IDF_GAMEMOD, 0, movestraight, FVAR_NONZERO, 1.2f, FVAR_MAX); // non-strafe modifier
-GFVAR(IDF_GAMEMOD, 0, movestrafe, FVAR_NONZERO, 1.1f, FVAR_MAX); // strafe modifier
-GFVAR(IDF_GAMEMOD, 0, moveinair, FVAR_NONZERO, 0.75f, FVAR_MAX); // in-air modifier
+GFVAR(IDF_GAMEMOD, 0, movespeed, FVAR_NONZERO, 1.15f, FVAR_MAX); // speed — MW2 tune
+GFVAR(IDF_GAMEMOD, 0, movecrawl, FVAR_NONZERO, 0.55f, FVAR_MAX); // crawl modifier
+GFVAR(IDF_GAMEMOD, 0, moverun, FVAR_NONZERO, 1.3f, FVAR_MAX); // running modifier
+GFVAR(IDF_GAMEMOD, 0, movestraight, FVAR_NONZERO, 1.25f, FVAR_MAX); // non-strafe modifier
+GFVAR(IDF_GAMEMOD, 0, movestrafe, FVAR_NONZERO, 1.15f, FVAR_MAX); // strafe modifier
+GFVAR(IDF_GAMEMOD, 0, moveinair, FVAR_NONZERO, 1.0f, FVAR_MAX); // in-air modifier — MW2 tune: full air control
 GFVAR(IDF_GAMEMOD, 0, movestepup, FVAR_NONZERO, 0.95f, FVAR_MAX); // step-up modifier
 GFVAR(IDF_GAMEMOD, 0, movestepdown, FVAR_NONZERO, 1.15f, FVAR_MAX); // step-down modifier
 
-GFVAR(IDF_GAMEMOD, 0, movesprint, FVAR_NONZERO, 1.5f, FVAR_MAX); // sprinting modifier
+GFVAR(IDF_GAMEMOD, 0, movesprint, FVAR_NONZERO, 1.75f, FVAR_MAX); // sprinting modifier — MW2 tune
 GFVAR(IDF_GAMEMOD, 0, movesprintrotvel, 0.0f, 8.0f, FVAR_MAX); // rotatation velocity inhibitor
 GFVAR(IDF_GAMEMOD, 0, movesprintdecay, 0.0f, 3.0f, FVAR_MAX); // sprinting decay factor
 
-GFVAR(IDF_GAMEMOD, 0, impulsejump, 0.0f, 1.5f, FVAR_MAX); // jump modifier
+GFVAR(IDF_GAMEMOD, 0, impulsejump, 0.0f, 1.35f, FVAR_MAX); // jump modifier — MW2 tune: lower apex
 GFVAR(IDF_GAMEMOD, 0, impulsejumpredir, 0.0f, 0.25f, FVAR_MAX); // how much of the old velocity is redirected into the new one
 GFVAR(IDF_GAMEMOD, 0, impulseboost, 0.0f, 2.0f, FVAR_MAX); // boost modifier
 GFVAR(IDF_GAMEMOD, 0, impulseboostredir, 0.0f, 0.5f, FVAR_MAX); // how much of the old velocity is redirected into the new one

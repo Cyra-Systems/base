@@ -253,12 +253,12 @@ namespace game
     FVAR(IDF_PERSIST, firstpersonpitchmax, 0, 45, 90);
     FVAR(IDF_PERSIST, firstpersonpitchscale, -1, 1, 1);
 
-    VAR(IDF_PERSIST, firstpersonsway, 0, 1, 1);
+    VAR(IDF_PERSIST, firstpersonsway, 0, 0, 1); // MW2 tune: kill weapon sway for snappy aim
     FVAR(IDF_PERSIST, firstpersonswayslide, 0, 0.5f, 1);
     FVAR(IDF_PERSIST, firstpersonswaymin, 0, 0.15f, 1);
     FVAR(IDF_PERSIST, firstpersonswaystep, 1, 50.f, 1000);
-    FVAR(IDF_PERSIST, firstpersonswayside, 0, 0.05f, 10);
-    FVAR(IDF_PERSIST, firstpersonswayup, 0, 0.05f, 10);
+    FVAR(IDF_PERSIST, firstpersonswayside, 0, 0.02f, 10); // MW2 tune: reduced side sway
+    FVAR(IDF_PERSIST, firstpersonswayup, 0, 0.02f, 10); // MW2 tune: reduced vertical sway
 
     VAR(IDF_PERSIST, firstpersonbob, 0, 0, 1);
     FVAR(IDF_PERSIST, firstpersonbobmin, 0, 0.2f, 1);
@@ -2968,6 +2968,31 @@ namespace game
         d->suicided = lastmillis;
     }
     ICOMMAND(0, suicide, "",  (), { suicide(player1); });
+
+    // Mode framework bridges — see /MODES.md.
+    // getclientlist returns space-separated client numbers of all connected
+    // players (excluding spectators / bots in this first revision). Modes
+    // use this to build alive-lists for win-condition tracking.
+    ICOMMAND(0, getclientlist, "", (), {
+        vector<char> buf;
+        loopv(players) if(players[i] && players[i]->state == CS_ALIVE) {
+            if(buf.length()) buf.add(' ');
+            char num[16];
+            formatstring(num, "%d", players[i]->clientnum);
+            for(const char *p = num; *p; ++p) buf.add(*p);
+        }
+        buf.add('\0');
+        result(buf.getbuf());
+    });
+
+    // killclient kills the player with the given client number. For now this
+    // only works on the local player (player1) — remote kills require a
+    // server-side bridge that we'll add when modes need to be authoritative
+    // across multiplayer. Single-player and bots are covered.
+    ICOMMAND(0, killclient, "i", (int *cn), {
+        if(player1 && player1->clientnum == *cn) suicide(player1);
+        // TODO: server-side kill for remote clients
+    });
 
     void particletrack(particle *p, uint type, int &ts, bool step)
     {
