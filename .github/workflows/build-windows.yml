@@ -24,17 +24,27 @@ jobs:
       - name: Install mingw-w64 toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y mingw-w64 make zip
-          # The Makefile invokes `windres` without the cross prefix.
-          # A symlink would set argv[0] to /usr/local/bin/windres,
-          # which makes windres look for winresrc.h relative to that
-          # path and fail. A wrapper preserves the mingw binary path
-          # so windres finds its own headers.
-          sudo tee /usr/local/bin/windres >/dev/null <<'EOF'
-          #!/bin/sh
-          exec /usr/bin/x86_64-w64-mingw32-windres "$@"
-          EOF
+          sudo apt-get install -y mingw-w64 mingw-w64-tools mingw-w64-common make zip
+          # Locate winresrc.h shipped by the mingw-w64-x86-64-dev package
+          # and capture its directory so we can hand it to windres.
+          WINRES_H=$(dpkg -L mingw-w64-x86-64-dev mingw-w64-common 2>/dev/null | grep -m1 '/winresrc\.h$' || true)
+          if [ -z "$WINRES_H" ]; then
+            WINRES_H=$(find /usr -name winresrc.h 2>/dev/null | head -1)
+          fi
+          echo "winresrc.h is at: $WINRES_H"
+          test -n "$WINRES_H"
+          WINRES_DIR=$(dirname "$WINRES_H")
+          # Wrap windres so the Makefile's bare invocation runs the
+          # cross resource compiler and gets an explicit include path.
+          printf '#!/bin/sh\nexec /usr/bin/x86_64-w64-mingw32-windres --include-dir=%s "$@"\n' "$WINRES_DIR" \
+            | sudo tee /usr/local/bin/windres >/dev/null
           sudo chmod +x /usr/local/bin/windres
+          echo "--- /usr/local/bin/windres ---"
+          cat /usr/local/bin/windres
+          echo "--- which windres ---"
+          which windres
+          echo "--- smoke test ---"
+          windres --version | head -1
 
       - name: Cross-compile Windows binaries
         working-directory: src
