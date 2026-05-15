@@ -72,15 +72,22 @@ jobs:
           find release/redeclipse -type f -name '.gitignore' -delete
           find release/redeclipse -type f -name '.gitmodules' -delete
 
-      - name: Zip release
+      - name: Archive release (split into 1.9 GiB volumes)
         working-directory: release
-        run: zip -r ../redeclipse-windows.zip redeclipse
+        run: |
+          sudo apt-get install -y p7zip-full
+          # -mx=1 = fast compression (data is mostly already-compressed media)
+          # -v1900m = split into 1.9 GiB volumes to stay under GitHub's 2 GiB
+          #          per-release-asset limit. Produces .7z.001, .7z.002, ...
+          7z a -mx=1 -v1900m ../redeclipse-windows.7z redeclipse
+          cd ..
+          ls -lh redeclipse-windows.7z*
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: redeclipse-windows
-          path: redeclipse-windows.zip
+          path: redeclipse-windows.7z*
           if-no-files-found: error
 
       - name: Publish rolling release
@@ -90,6 +97,11 @@ jobs:
           name: "Build (${{ github.ref_name }})"
           body: |
             Automated Windows build from `${{ github.ref_name }}` @ ${{ github.sha }}.
-            Download `redeclipse-windows.zip`, extract, run `redeclipse.bat`.
-          files: redeclipse-windows.zip
+
+            **How to install:**
+            1. Download every `redeclipse-windows.7z.0XX` file below into the same folder.
+            2. Right-click `redeclipse-windows.7z.001` → 7-Zip → Extract here.
+               (Install 7-Zip from https://www.7-zip.org/ if you don't have it.)
+            3. Open the extracted `redeclipse` folder and double-click `redeclipse.bat`.
+          files: redeclipse-windows.7z*
           prerelease: true
